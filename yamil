@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!----------------------
+					BIENVENIDO  A PALETO TV	
+					
+					
+-->
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  [B]Peliculas[/B] [/COLOR] [COLOR lightslategray]  [/COLOR]</title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/peliculas.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/pyt_vod.xml</externallink>
+</item>
+
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  [B]Series de TV[/B] [/COLOR] [COLOR lightslategray] [/COLOR]</title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/series.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/gnula.xml</externallink>
+</item>
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  Mexico[/COLOR] </title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/mexico.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/mx.xml</externallink>
+</item>
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  TotalPlay [/COLOR] [COLOR lightslategray][/COLOR]  </title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/tp.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/totalp.xml</externallink>
+</item>
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR lightgreen]  [B]IPTV[/B]   [/COLOR][COLOR lightslategray][B][World Servers Updated Daily][/B][/COLOR] </title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/iptv.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/iptv.xml</externallink>
+</item>
+
+<item>
+		<title>[COLOR lime]•[/COLOR][COLOR skyblue]  [B] CANALES DE TV [/B][/COLOR]  [COLOR lightslategray] [/COLOR]</title>
+		<link>http://ignorame</link><thumbnail>https://1.bp.blogspot.com/-sx3NIAdJ1Hk/WI7vbG6C0tI/AAAAAAAAAMo/v8VZi9cjc7IeO6ASkh383Uu0uujP4wx5wCLcB/s1600/icon.png</thumbnail> 
+		<externallink>http://srregio.com/Addon/Menus/MenuIndex.txt</externallink><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+		</item>
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  Musica[/COLOR]  [COLOR lightslategray](Music) [/COLOR]</title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/musica.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/music.xml</externallink><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+</item>
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  Paises[/COLOR] </title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/paises.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/paises.xml</externallink>
+</item>
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  Internacionales[/COLOR] </title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/internacional.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/inter.xml</externallink>
+</item>
+
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  USA and UK Channels[/COLOR]  [COLOR lightslategray] filmon channels[/COLOR]</title>
+
+<link>$doregex[makelist]</link>
+<regex>
+   <name>makelist</name>
+   <listrepeat><![CDATA[
+          <title>[UPPERCASE][COLOR skyblue][makelist.param1][/COLOR][/UPPERCASE]</title>
+          <link>plugin://plugin.video.f4mTester/?streamtype=HLSRETRY&amp;url=$doregex[get-url]&amp;name=[makelist.param1] [AdryanList]</link>
+   ]]></listrepeat>
+   <expres>titulo="(.*?)".*channel_id=(.*?)"</expres>
+   <page>http://adryanlist.org/adryan/filmon.xml</page>
+   <cookieJar></cookieJar>
+</regex>
+
+
+
+<regex>
+<name>get-url</name>
+<expres><![CDATA[#$pyFunction
+def getCookiesString(cookieJar):
+    try:
+        cookieString=""
+        for index, cookie in enumerate(cookieJar):
+            cookieString+=cookie.name + "=" + cookie.value +";"
+    except: pass
+    #print 'cookieString',cookieString
+    return cookieString
+
+def f4mcallback(param, type, error, Cookie_Jar, url, headers):
+  if type==1:
+    newurl=getUrl(param,Cookie_Jar)
+    oldservername=url.split('/')[2]
+    newserver=newurl.split('/')
+    newserver[2]=oldservername
+    newurl='/'.join(newserver)
+    return newurl,Cookie_Jar
+  else:
+    return '',None
+
+def getUrl(param, Cookie_Jar):
+  import requests, re, urllib, inspect
+  headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'}
+  url = 'http://www.filmon.com/tv/channel/export?channel_id='+param
+  session = requests.session()
+  session.cookies = Cookie_Jar
+  source= session.get(url, headers = headers)
+  swf = re.findall('streamer":"(.*?)"', source.text)[0]
+  cleanswf = swf.replace('\\/','/')
+  referer = 'http://www.filmon.com' + cleanswf
+  headers1 = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36', 'Referer': url, 'X-Requested-With': 'XMLHttpRequest'}
+  url2 = 'http://www.filmon.com/api-v2/channel/%s?protocol=hls'%param
+  source1= session.get(url2, headers = headers1)
+  getHD = re.findall('"high","url":"([^"]+)"', source1.text)[0]
+  return getHD 
+ 
+def GetLSProData(page_data,Cookie_Jar,m):
+  import os,urllib
+  callbackfunction=os.path.realpath(__file__)
+  callbackparam='[makelist.param2]'
+  url=getUrl('[makelist.param2]',Cookie_Jar)
+  referer = 'http://www.filmon.com/'
+  print 'url',url
+  return urllib.quote_plus (url + '|Referer=' + referer+'&cookie='+getCookiesString(Cookie_Jar)+'&User-Agent=Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36') +'&callbackpath='+urllib.quote_plus(callbackfunction)+'&callbackparam='+urllib.quote_plus(callbackparam)
+]]></expres>
+<page></page>
+<cookieJar></cookieJar>
+<thumbnail>http://adryanlist.org/adryan/img/filmon.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+</item>
+
+
+<item>
+<title>[COLOR lime]•[/COLOR][COLOR deepskyblue]  Mas Listas[/COLOR] [COLOR lightyellow](Upload your lists / sube tus listas)[/COLOR] </title>
+<link>http://ignorame</link><thumbnail>http://adryanlist.org/adryan/img/listas.jpg</thumbnail><fanart>http://adryanlist.org/adryan/img/fanart.jpg</fanart>
+<externallink>http://adryanlist.org/adryan/lists.xml</externallink>
+</item>
+
+
